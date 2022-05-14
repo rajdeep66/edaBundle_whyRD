@@ -124,3 +124,14 @@ make
 sudo make install
 cd ..
 
+#######################################################
+#STEP:7 Installing netgen
+########################################################
+cd ~/whyRD_eda_bundle/
+git clone git://opencircuitdesign.com/netgen
+cd netgen 
+./configure
+make
+sudo make install
+
+cd ..
