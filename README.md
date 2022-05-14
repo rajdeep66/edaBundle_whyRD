@@ -1,6 +1,8 @@
 # edaBundle_whyRD <br/>
 opensource EDA tool flor VLSI design :this script is in its initial phase and usefull if you just starting your journey to open source EDA tool , all ./configure command use default configuration and instrtucted to configure as per your requirement afer you get expertise to any specific tool till then please follow these steps to install yosys,xschem,ngspice,magic,netgen,openPDK and sky130nmpdk
 Note: we are assuming you have the linux environment up <br/>
+<br/>
+<br/>
 Step 1: dowload eda_bundle.sh to your machine , and copy file text content top a anyname.sh file in you linux file system.<br/>
 Step 2: run it as sh ./anyname.sh -->for most case it will run for few hour will ask you occasionally password and finist the process.<br/>
         But recomended to run it step wise(steps are mensioned in the code itself , and download only the tool you need.<br/>
