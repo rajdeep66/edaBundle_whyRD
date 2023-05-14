@@ -64,7 +64,7 @@ cd release
 ## build the program
 make
 ## install the program and needed files.
-make install
+sudo make install
 cd ..
 
 
