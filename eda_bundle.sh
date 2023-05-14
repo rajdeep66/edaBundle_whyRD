@@ -1,9 +1,8 @@
 <<comment
-This is script is tested in WLS of window 11 in ubantu 18.04 release , 
+This is script is tested in WLS of window 11 in ubantu 22.04 release , 
 Please read README in github to exactly know what to do 
-If it break down try to follwo one step at a time , and for failed section refer the original help document(in tool original site/git page)
-for that section 
-comment
+If it break down try to follow one step at a time , and for failed section refer the original help document(in tool original site/git page)
+Also search for online help 
 
 #######################################################
 #STEP:1(Important) Download maximum of pre-requiste for all tool
@@ -23,65 +22,20 @@ sudo apt-get install build-essential clang bison flex \
 	libxmp4 libxpm-dev  libxcb1 libcairo2  \
       libxrender-dev libx11-xcb-dev libxaw7-dev freeglut3-dev automake
 
-
-echo "pre-requisite installed"
-echo "_________________________________________________"
-
 #######################################################
-#STEP:2(OPTIONAL) Install yosys if you wanna wortk on verilog
+#STEP:2 Installing xschem
 ########################################################
 cd ~/whyRD_eda_bundle/
-echo "Installing yosys"
-echo "_________________________________________________"
-#install yosys it will also download and install ABC 
-git clone https://github.com/YosysHQ/yosys.git
-cd yosys
+#install xschem a schemaic capture tool
+git clone https://github.com/StefanSchippers/xschem.git xschem
+cd xschem
 ./configure 
-make
-sudo make install
-cd ..
-#installing iverilog as a dependancy for yosys 
-git clone https://github.com/steveicarus/iverilog.git
-cd iverilog
-sh autoconf.sh
-./configure
 make 
 sudo make install 
-cd ~/whyRD_eda_bundle/
-#make test
-echo "Yosys installed"
-echo "_________________________________________________"
-
-
-#######################################################
-#STEP:3 Installing openPDK and sky130nm
-########################################################
-#install sky130 pdk 
-cd ~/whyRD_eda_bundle/
-git clone https://github.com/google/skywater-pdk
-cd skywater-pdk
-git submodule init libraries/sky130_fd_io/latest
-git submodule init libraries/sky130_fd_pr/latest
-git submodule init libraries/sky130_fd_sc_hd/latest
-git submodule init libraries/sky130_fd_sc_hvl/latest
-git submodule update
-make timing
 cd ..
 
-#install open_pdk , which help in installing sky130 tech file to our eda tool
-git clone git://opencircuitdesign.com/open_pdks
-cd open_pdks
-./configure --enable-sky130-pdk=~/whyRD_eda_bundle/skywater-pdk/libraries/ \
-            --with-sky130-link-targets=source --with-ef-style 
-make 
-sudo make install 
-make distclean
-cd ..
-
-
-
 #######################################################
-#STEP:4 Installing magic VLSI
+#STEP:3 Installing magic VLSI
 ########################################################
 cd ~/whyRD_eda_bundle/
 #install magic VLSI layout tool 
@@ -91,47 +45,55 @@ cd magic
 make 
 sudo make install 
 cd ..
+
+#######################################################
+#STEP:4 Installing ngspice
+########################################################
+# clone the source repository into a local ngspice_git directory
+cd ~/whyRD_eda_bundle/
+git clone https://git.code.sf.net/p/ngspice/ngspice ngspice_git
+cd ngspice_git
+mkdir release
+## in order to run the following you must have adms installed (sudo apt-get install adms)
+sudo apt-get install adms
+./autogen.sh --adms
+cd release
+## by default if no --prefix is provided ngspice will install under /usr/local/{bin,share,man,lib}
+## you can add a --prefix=/home/username to install into your home directory.
+../configure --with-x --enable-xspice --disable-debug --enable-cider --with-readline=yes --enable-openmp --enable-adms
+## build the program
+make
+## install the program and needed files.
+make install
+cd ..
+
+
+#######################################################
+#STEP:5 Installing openPDK and sky130nm
+########################################################
+## fetch the repository with git:
+cd ~/whyRD_eda_bundle/
+git clone git://opencircuitdesign.com/open_pdks
+cd open_pdks
+## configure the build, a --prefix option can be given to install
+## in a different place, by default after installation a 
+## /usr/local/share/pdk directory is created if no --prefix is provided.
+## Below line for example requests installation in my home directory
+## (/home/schippes/share/pdk):
+## ./configure --enable-sky130-pdk --prefix=/home/schippes
+## Do the following steps one at a time and ensure no errors are
+##  reported after each step.
+./configure --enable-sky130-pdk 
+make
+make install 
+cd ..
+
+
 #integrate sky130 to magic 
 sudo ln -s /usr/local/share/pdk/sky130A/libs.tech/magic/* /usr/local/lib/magic/sys
 #magic -T sky130A
 
-#######################################################
-#STEP:5 Installing xschem
-########################################################
-cd ~/whyRD_eda_bundle/
-#intsll xshem a schemaic capture 
-git clone https://github.com/StefanSchippers/xschem.git xschem
-cd xschem
-./configure 
-make 
-sudo make install 
-cd ..
 
-#######################################################
-#STEP:6 Installing xschem
-########################################################
-#install ngspice 
-cd ~/whyRD_eda_bundle/
-sudo apt-get install -y libtool
-git clone https://git.code.sf.net/p/ngspice/ngspice ngspice_test
-cd ngspice_test
-git pull
-git checkout pre-master
-./autogen.sh
-./configure --with-x --enable-xspice --disable-debug --enable-cider \
-	--with-readline=yes --enable-openmp 
-make
-sudo make install
-cd ..
 
-#######################################################
-#STEP:7 Installing netgen
-########################################################
-cd ~/whyRD_eda_bundle/
-git clone git://opencircuitdesign.com/netgen
-cd netgen 
-./configure
-make
-sudo make install
 
-cd ..
+
