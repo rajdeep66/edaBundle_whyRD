@@ -21,7 +21,8 @@ sudo apt-get install build-essential clang bison flex \
 	make m4 tcsh csh libx11-dev gperf  tcl8.6-dev tk8.6 tk8.6-dev \
 	libxmp4 libxpm-dev  libxcb1 libcairo2  \
       libxrender-dev libx11-xcb-dev libxaw7-dev freeglut3-dev automake yosys
-
+sudo apt-get update
+sudo apt-get -y install libtool
 #######################################################
 #STEP:2 Installing xschem
 ########################################################
