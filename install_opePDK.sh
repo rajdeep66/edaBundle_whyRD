@@ -17,8 +17,8 @@ cd open_pdks
 ## Do the following steps one at a time and ensure no errors are
 ##  reported after each step.
 ./configure --enable-sky130-pdk 
-make
-make install 
+sudo make
+sudo make install 
 cd ..
 
 
